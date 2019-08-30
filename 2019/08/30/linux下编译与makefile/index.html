@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>一个简单的自我介绍 · SamJ&#39;s blog</title>
+    <title>linux下编译与makefile · SamJ&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,7 +203,7 @@
 </head>
 
     
-        <body class="about-body">
+        <body class="post-body">
     
     
 <header class="header">
@@ -211,6 +211,15 @@
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >SamJ&#39;s blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">linux下编译与makefile</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>SamJ's blog</a>
 </header>
@@ -229,23 +238,67 @@ height:50vh;
     <!-- 主页  -->
     
     
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/intro/about-bg.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(//source.unsplash.com/random)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            一个简单的自我介绍
+            linux下编译与makefile
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "linux, C">linux, C</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">933</span>Reading time: <span class="post-count reading-time">3 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/08/30</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -346,12 +399,158 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <!-- 不可以删除，否则会调用post的layout  -->
-<main class="main about-page">
+            <main class="main post-page">
     <article class="article-entry">
-        <p>小伙伴萌大家好，我是一枚在读研究生，热爱动漫，编程，希望从菜鸡变成更熟练的菜鸡，以此博客记录自己的学习笔记，心路历程，内容杂七杂八，有不正之处欢迎指正，不喜勿喷。</p>
+        <h3 id="gcc-g-编译器"><a href="#gcc-g-编译器" class="headerlink" title="gcc/g++编译器"></a>gcc/g++编译器</h3><hr>
+<p>gcc常用选项：</p>
+<p>-c 表示编译源文件， -o表示输出文件， -g用gdb调试时要写上此参数， -D编译时将宏定义传入（DEBUG）</p>
+<p>gcc编译过程：</p>
+<ul>
+<li>预处理：将源文件的宏展开，载入头文件         gcc -E … .i</li>
+<li>编译：将.c文件编译成汇编文件       gcc -S … .s</li>
+<li>汇编：将汇编文件编译成机器码         as …      .o</li>
+<li>链接：将.o文件进行连接，得到可执行二进制文件        gcc </li>
+</ul>
+<hr>
+<h3 id="静态库与动态库"><a href="#静态库与动态库" class="headerlink" title="静态库与动态库"></a>静态库与动态库</h3><hr>
+<p>静态库：</p>
+<p>​    创建：先gcc -c add.c 编译add.c得到.o文件，再 ar crsv libadd.a add.o 对目标文件.o进行归档,将libadd.a拷贝到/lib或/usr/lib下</p>
+<p>​    编译时：gcc -o main main.c -ladd</p>
+<p>编译时链接静态库会将静态库拷贝到可执行二进制文件中。</p>
+<p>动态库：</p>
+<p>​    创建：gcc -fPIC -Wall -c add.c; gcc -shared -o libadd.so add.o; gcc -o main main.c -ladd,将库文件拷贝到/lib或者/usr/lib下</p>
+<p>​    使用：./main</p>
+<p>动态库在执行时加载，而不是在编译时拷贝到程序中。静态库会使程序臃肿难以升级，动态库使程序易于升级但难以部署。</p>
+<hr>
+<h3 id="Makefile工程管理器"><a href="#Makefile工程管理器" class="headerlink" title="Makefile工程管理器"></a>Makefile工程管理器</h3><hr>
+<p>主要为了增量编译，防止只对少数文件进行修改时要重新编译所有文件。</p>
+<p>Makefile格式：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">target:dependency_files</span></span><br><span class="line">	command(gcc...)(前面是tab)</span><br></pre></td></tr></table></figure>
+
+<p>有一个较为简单的例子：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main:main.o func.o</span></span><br><span class="line">	gcc -o main main.o func.o</span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	gcc -c main.c</span><br><span class="line"><span class="section">func.o:func.c</span></span><br><span class="line">	gcc -c func.c</span><br></pre></td></tr></table></figure>
+
+<p>使用make时，make程序先读到第1行的目标文件main，和他的依赖文件main.o和func.o，之后去比较main文件和main.o和func.o的产生时间，若main比前两者旧（生成的时间要早），即执行第二条命令，此过程是一个递归过程，及会对main.o和func.o进行同样操作。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">main:main.o func.o</span></span><br><span class="line">	gcc -o main main.o func.o</span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	gcc -c main.c</span><br><span class="line"><span class="section">func.o:func.c</span></span><br><span class="line">	gcc -c func.c</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf main.o func.o main</span><br></pre></td></tr></table></figure>
+
+<p>输入make clean 命令可以删除生成的文件</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#定义变量</span></span><br><span class="line">OBJS:=main.o func.o</span><br><span class="line">ELF:=main</span><br><span class="line"><span class="comment">#使用变量</span></span><br><span class="line"><span class="variable">$(ELF)</span>:<span class="variable">$(OBJS)</span></span><br><span class="line">	gcc -o <span class="variable">$(ELF)</span> <span class="variable">$(OBJS)</span></span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	gcc -c main.c -o main.o</span><br><span class="line"><span class="section">func.o:func.c</span></span><br><span class="line">	gcc -c func.c -o func.o</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf <span class="variable">$(ELF)</span> <span class="variable">$(OBJS)</span></span><br></pre></td></tr></table></figure>
+
+<p>常用的自动变量（使用时，自动用特定的值替换该变量）：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$@</td>
+<td>当前规则的目标文件</td>
+</tr>
+<tr>
+<td>$&lt;</td>
+<td>当前规则第一个依赖文件</td>
+</tr>
+<tr>
+<td>$^</td>
+<td>当前规则所有依赖文件，以空格分隔</td>
+</tr>
+<tr>
+<td>$(@D)</td>
+<td>目标文件的目录名</td>
+</tr>
+<tr>
+<td>$(@F)</td>
+<td>目标文件的文件名</td>
+</tr>
+</tbody></table>
+<p>常用预定义变量（内部定义好的变量，值是固定的）</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CC</td>
+<td>C编译器(默认cc)</td>
+</tr>
+<tr>
+<td>CXX</td>
+<td>C++编译器(默认g++)</td>
+</tr>
+<tr>
+<td>CFLAGS</td>
+<td>C编译器选项(CFLAGS:=…)</td>
+</tr>
+<tr>
+<td>CXXFLAGS</td>
+<td>C++编译器选项</td>
+</tr>
+</tbody></table>
+<p>通过使用内部变量，可以将上述makefile改写为：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">OBJS:=main.o func.o</span><br><span class="line">CC:=gcc</span><br><span class="line"><span class="section">main:<span class="variable">$(OBJS)</span></span></span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$@</span> <span class="variable">$^</span></span><br><span class="line"><span class="section">main.o:main.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$@</span> -c <span class="variable">$^</span></span><br><span class="line"><span class="section">func.o:func.c</span></span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$@</span> -c <span class="variable">$^</span></span><br></pre></td></tr></table></figure>
+
+<p>由于.o文件会自动依赖.c或者.cc文件，所以可以省略最后两个.o的书写。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">OBJS:=main.o func.o</span><br><span class="line">ELF:=main</span><br><span class="line">CC:=gcc</span><br><span class="line"><span class="variable">$(ELF)</span>:<span class="variable">$(OBJS)</span></span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$@</span> <span class="variable">$^</span>  <span class="comment">#相当于gcc -o main main.o func.o</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf <span class="variable">$(OBJS)</span> <span class="variable">$(ELF)</span></span><br></pre></td></tr></table></figure>
+
+<p>makefile 中常用的两个函数：</p>
+<ol>
+<li>wildcard会搜索当前目录下的文件，通过通配符进行匹配，并将所有符合要求的文件名展成一列，以空格隔开。如（SOURCES:=$(wildcard *.c)）会将所有.c 文件按上述操作展成一列，并存入SOURCES变量中。</li>
+<li>patsubst字符串替换函数，用法：OBJS:=$(patsubst %.c,%.o,$(SOURCES))，将SOURCES中的.c换成.o</li>
+</ol>
+<p>所以上面提到的makefile还可以这样写：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SRCS:=<span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br><span class="line">OBJS:=<span class="variable">$(<span class="built_in">patsubst</span> %.c,%.o,<span class="variable">$(SRCS)</span>)</span></span><br><span class="line">ELF:=main</span><br><span class="line">CC:=gcc</span><br><span class="line"><span class="variable">$(ELF)</span>:<span class="variable">$(OBJS)</span></span><br><span class="line">	<span class="variable">$(CC)</span> -o <span class="variable">$@</span> <span class="variable">$^</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -rf <span class="variable">$(OBJS)</span> <span class="variable">$(ELF)</span></span><br></pre></td></tr></table></figure>
+
 
     </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/08/19/helloworld/" title= "helloworld">
+                    <div class="prevTitle">helloworld</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80NjM5My8yMjkwNA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -436,6 +635,24 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#gcc-g-编译器"><span class="toc-number">1.</span> <span class="toc-text">gcc/g++编译器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#静态库与动态库"><span class="toc-number">2.</span> <span class="toc-text">静态库与动态库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Makefile工程管理器"><span class="toc-number">3.</span> <span class="toc-text">Makefile工程管理器</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -565,6 +782,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
 	<script type="text/javascript" src="/js/src/clicklove.js"></script>
     </body>
