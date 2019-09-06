@@ -346,53 +346,27 @@
     
     
     <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/30/linux下编译与makefile/" >
+        <a class="abstract-title" href = "/2019/09/06/数据结构和算法（一）/" >
             
-                <span>linux下编译与makefile</span>
+                <span>数据结构和算法（一）</span>
         </a>
         <div class="abstract-content">
-            总结一下linux下编译的操作，还有编写Makefile时经常用到的东西
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/30</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "linux, C">linux, C</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/08/19/helloworld/" >
-            
-                <span>helloworld</span>
-        </a>
-        <div class="abstract-content">
-            没想到第一篇博客是来解决hexo的cannot get / 问题，注意 当post里面没有文件时也会出现此问题。我就是这种情况，如果大家的博客之前可以正常访问，然后删除自带的文件出现问题后注意检查。
+            链表操作
 
+头插法
+
+12345678910111213void listHeadInsert(pStudent_t *ppHead,Student_t **ppTail,int val)&#123;	pStudent_t pNew=(pStudent_t)calloc(1,sizeof(Student_t));	pNew-&gt;num=val;	if(NULL==*ppHead)//判断链表是否为空	&#123;		*ppHead=pNew;		*ppTail=pNew;	&#125;else&#123;		pNew-&gt;pNext=*ppHead;		*ppHead=pNew;...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
             <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/19</span>
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/06</span>
             </div>
             <!-- tags  -->
             
             <div class= abstract-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "hexo">hexo</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "algorithm">algorithm</a>
     
 </div>
             
