@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>作业：最小生成树和多机调度 · SamJ&#39;s blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >SamJ&#39;s blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">作业：最小生成树和多机调度</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>SamJ's blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(//source.unsplash.com/random)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            作业：最小生成树和多机调度
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "algorithm">algorithm</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">1.8k</span>Reading time: <span class="post-count reading-time">9 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/20</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="最小生成树和作业调度"><a href="#最小生成树和作业调度" class="headerlink" title="最小生成树和作业调度"></a>最小生成树和作业调度</h3><hr>
+<p><strong>最小生成树</strong>：对于一个连通图（图中任意两点相通）G = (V, E)，且E中的每条边上有权值。如果G的一个子图G‘ 是一棵包含G的所有顶点的树，称G’为G的生成树。在G的所有生成树中，个边的权值之和最小的生成树称为G的最小生成树。</p>
+<p><strong>应用举例</strong> ：设计一片区域的通信网络时，节点表示城市，边上的权值表示在两个城市之间建立通信线路需要的费用，则最小生成树就是在该区域建立通信网络的最经济方案。</p>
+<hr>
+<h4 id="Kruscal算法"><a href="#Kruscal算法" class="headerlink" title="Kruscal算法"></a>Kruscal算法</h4><hr>
+<ul>
+<li>设一个集合A是某棵最小生成树的子集，在Kruscal算法中，A集合是一个森林，即把每个节点都当作可能的最小生成树的子集。</li>
+<li>找到一条边，该边的权值最小且该边所连接的两个节点不在同一棵树中，将这条边所连接的两棵树合并，直到A集合中只剩下一颗树。</li>
+</ul>
+<p>简单地说，就是在所有剩余的边中找到权值最小的边，若把它加入不会构成环就将其加入，如果构成环就舍弃，直到找完所有的边。</p>
+<p>例子：</p>
+<img src="/2019/09/20/作业：最小生成树和多机调度/origin.png" alt="origin" style="zoom:80%;">
+
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5Ckruscal1.png" alt="kruscal1"></p>
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5Ckruscal2.png" alt="kruscal2"></p>
+<p>时间复杂度O(ElogE)， 主要花费在对边按权值大小进行排序上 。</p>
+<hr>
+<h4 id="Prim算法"><a href="#Prim算法" class="headerlink" title="Prim算法"></a>Prim算法</h4><hr>
+<ul>
+<li>Prim算法中的A总是构成一棵树。</li>
+<li>该算法每次在连接集合A和A之外的节点的边中选取权值最小的边加入到A集合，直到A集合包含了所有的节点。</li>
+</ul>
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5Cprim1.png" alt="prim1"></p>
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5Cprim2.png" alt="prim2"></p>
+<p>时间复杂度取决于寻找下一个待插入节点的方式，若使用最小堆实现的优先级队列则其时间复杂度可以是O(ElogV)。</p>
+<p>代码实现：</p>
+<p>graph.h</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> GRAPH_H_INCLUDED</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GRAPH_H_INCLUDED</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Edge</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Edge(<span class="keyword">int</span> idFrom, <span class="keyword">int</span> idTo, <span class="keyword">int</span> weight)</span><br><span class="line">    : _idFrom(idFrom)</span><br><span class="line">    , _idTo(idTo)</span><br><span class="line">    , _weight(weight)</span><br><span class="line">    &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printEdge</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Edge &amp; );</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getIdFrom</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _idFrom; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getIdTo</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _idTo; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getWeight</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _weight; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _idFrom;</span><br><span class="line">    <span class="keyword">int</span> _idTo;</span><br><span class="line">    <span class="keyword">int</span> _weight;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Graph</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Graph();</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printGraph</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mstKruscal</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">mstPrim</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printKruscal</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printPrim</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">friend</span> <span class="keyword">void</span> <span class="title">findCanReach</span><span class="params">(<span class="keyword">int</span>*, <span class="keyword">int</span>*, <span class="keyword">int</span>, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Edge&gt;&amp;, Graph *)</span></span>;</span><br><span class="line">    ~Graph();</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; _nodes;    <span class="comment">//存放所有节点</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Edge&gt; _edges;   <span class="comment">//存放所有边</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Edge&gt; _kruscalEdges;    <span class="comment">//kruscal算法的结果</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">list</span>&lt;Edge&gt; _primEdges;       <span class="comment">//prim算法的结果</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// GRAPH_H_INCLUDED</span></span></span><br></pre></td></tr></table></figure>
+
+<p>graph.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"graph.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Edge::printEdge()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; _idFrom &lt;&lt; <span class="string">"---"</span> &lt;&lt; _idTo &lt;&lt; <span class="string">" "</span> &lt;&lt; _weight &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> Edge::<span class="keyword">operator</span>&lt;(<span class="keyword">const</span> Edge &amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>-&gt;_weight &lt; rhs.getWeight();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Graph::Graph()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"please input nodes' id:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">int</span> id, idFrom, idTo, weight;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; id, id != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        _nodes.push_back(id);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"please input edges:"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">cin</span> &gt;&gt; idFrom, idFrom != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; idTo &gt;&gt; weight;</span><br><span class="line">        _edges.push_back(Edge(idFrom, idTo, weight));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Graph::printGraph()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> e : _edges)</span><br><span class="line">    &#123;</span><br><span class="line">        e.printEdge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Graph::printKruscal()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> e : _kruscalEdges)</span><br><span class="line">    &#123;</span><br><span class="line">        e.printEdge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Graph::printPrim()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> e : _primEdges)</span><br><span class="line">    &#123;</span><br><span class="line">        e.printEdge();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isNotInOneTree</span><span class="params">(<span class="keyword">int</span> id1, <span class="keyword">int</span> id2, <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp; forest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i1 = <span class="number">0</span>, i2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; forest.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(find(forest[i].begin(), forest[i].end(), id1) != forest[i].end())</span><br><span class="line">            i1 = i;</span><br><span class="line">        <span class="keyword">if</span>(find(forest[i].begin(), forest[i].end(), id2) != forest[i].end())</span><br><span class="line">            i2 = i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(i1 != i2)                        </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; forest[i2].size(); ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            forest[i1].push_back(forest[i2][i]);</span><br><span class="line">        &#125;</span><br><span class="line">        forest[i2].clear();</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Graph::mstKruscal()</span><br><span class="line">&#123;</span><br><span class="line">    sort(_edges.begin(), _edges.end());</span><br><span class="line">    <span class="keyword">auto</span> it = _edges.begin();</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; forest(_nodes.size());</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _nodes.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        forest[i].push_back(_nodes[i]);</span><br><span class="line">    &#125;                                                      </span><br><span class="line">    <span class="keyword">while</span>(it != _edges.end())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(isNotInOneTree(it-&gt;getIdFrom(), it-&gt;getIdTo(), forest))</span><br><span class="line">            _kruscalEdges.push_back(*it);</span><br><span class="line">        ++it;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isInSet</span><span class="params">(<span class="keyword">int</span> id, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; sets)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(find(sets.begin(), sets.end(), id) != sets.end())</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Handle</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Handle(<span class="keyword">int</span> id)</span><br><span class="line">    :_id(id)</span><br><span class="line">    &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(Edge e)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> e.getIdFrom() == _id;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> _id;</span><br><span class="line">&#125;Handle_t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">findCanReach</span><span class="params">(<span class="keyword">int</span> *prim, <span class="keyword">int</span> *notInPrim, <span class="keyword">int</span> primCnt, <span class="built_in">vector</span>&lt;Edge&gt;&amp; canReach, Graph *G)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(j &lt; primCnt)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> it = G-&gt;_edges.begin();</span><br><span class="line">        <span class="keyword">while</span>(it != G-&gt;_edges.end())</span><br><span class="line">        &#123;</span><br><span class="line">            it = find_if(it, G-&gt;_edges.end(), Handle_t(prim[j]));</span><br><span class="line">            <span class="keyword">if</span>(it == G-&gt;_edges.end())</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">int</span> exCnt = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; G-&gt;_nodes.size(); ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(it-&gt;getIdTo() == prim[i] || it-&gt;getIdFrom() == prim[i])</span><br><span class="line">                &#123;</span><br><span class="line">                    ++exCnt;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(exCnt &lt;= <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                canReach.push_back(*it);</span><br><span class="line">            &#125;</span><br><span class="line">            ++it;</span><br><span class="line">        &#125;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Graph::mstPrim()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> primCnt = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Edge&gt;::iterator it;</span><br><span class="line">    <span class="keyword">int</span> *prim = (<span class="keyword">int</span> *)<span class="built_in">calloc</span>(_nodes.size(), <span class="keyword">sizeof</span>(<span class="keyword">int</span>));                      <span class="comment">//已经加入到prim的节点</span></span><br><span class="line">    <span class="keyword">int</span> *notInPrim = (<span class="keyword">int</span> *)<span class="built_in">calloc</span>(_nodes.size(), <span class="keyword">sizeof</span>(<span class="keyword">int</span>));;                 <span class="comment">//没在prim中的节点</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Edge&gt; canReach;              <span class="comment">//可以到达的节点经过的边的结合</span></span><br><span class="line">    prim[<span class="number">0</span>] = _nodes[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">1</span>; i &lt; _nodes.size(); ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        notInPrim[i] = _nodes[i];</span><br><span class="line">    &#125;                                   <span class="comment">//初始化两个集合</span></span><br><span class="line">    <span class="keyword">while</span>(primCnt &lt; _nodes.size())</span><br><span class="line">    &#123;</span><br><span class="line">        findCanReach(prim, notInPrim, primCnt, canReach, <span class="keyword">this</span>);      <span class="comment">//获取当前可到达节点</span></span><br><span class="line">        sort(canReach.begin(), canReach.end());</span><br><span class="line">        _primEdges.push_back(canReach.front());</span><br><span class="line">        prim[primCnt] = canReach.front().getIdTo();</span><br><span class="line">        ++primCnt;</span><br><span class="line">        canReach.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(prim);</span><br><span class="line">    <span class="built_in">free</span>(notInPrim);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Graph::~Graph()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"program done"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>main.cpp</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"graph.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Graph g;</span><br><span class="line">    <span class="comment">//g.printGraph();</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"kruscal------------"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    g.mstKruscal();</span><br><span class="line">    g.printKruscal();</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"prim---------------"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    g.mstPrim();</span><br><span class="line">    g.printPrim();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5Cmstresult.png" alt="mstresult"></p>
+<hr>
+<h4 id="多机调度"><a href="#多机调度" class="headerlink" title="多机调度"></a>多机调度</h4><hr>
+<p>多机调度问题要求给出一种方案，使所给的n个作业在尽可能短的时间内由m台机器处理完成。</p>
+<p>该问题是一个NP完全问题，但使用贪心的策略可以得到性能较好的算法。</p>
+<ul>
+<li>当n&lt;= m 时，将机器i的[0, t<sub>i</sub>]分配给作业i即可。</li>
+<li>当n&gt;m时，先将n个作业所需要的处理时间从大到小排序， 然后按此顺序将作业分配给空闲的处理机（总工作时间最短的）。</li>
+</ul>
+<p>例子： 书上的例子，有7个任务，编号从1到7，处理时间为{2, 14, 4, 16, 6, 5, 3}。</p>
+<p>分配情况可以是下图：</p>
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5CtaskDistribut.png" alt="taskDistribut"></p>
+<p>代码实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MACHINENUM 3</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TASKNUM 7</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Task</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> taskId;</span><br><span class="line">    <span class="keyword">int</span> taskTime;</span><br><span class="line">&#125;Task_t;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Machine</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> machineId;</span><br><span class="line">    <span class="keyword">int</span> totalTime;</span><br><span class="line">&#125;Machine_t;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *p1, <span class="keyword">const</span> <span class="keyword">void</span> *p2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Task_t *t1 = (Task_t*)p1;</span><br><span class="line">    Task_t *t2 = (Task_t*)p2;</span><br><span class="line">    <span class="keyword">return</span> t2-&gt;taskTime - t1-&gt;taskTime;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Machine_t *m1, Machine_t *m2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Machine_t temp;</span><br><span class="line">    <span class="built_in">memcpy</span>(&amp;temp, m1, <span class="keyword">sizeof</span>(Machine_t));</span><br><span class="line">    <span class="built_in">memcpy</span>(m1, m2, <span class="keyword">sizeof</span>(Machine_t));</span><br><span class="line">    <span class="built_in">memcpy</span>(m2, &amp;temp, <span class="keyword">sizeof</span>(Machine_t));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">minHeap</span><span class="params">(Machine_t *machines, <span class="keyword">int</span> adjustPos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> dad = adjustPos;</span><br><span class="line">    <span class="keyword">int</span> son = <span class="number">2</span>*dad + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(son &lt; MACHINENUM)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(son + <span class="number">1</span> &lt; MACHINENUM &amp;&amp; machines[son].totalTime &gt; machines[son + <span class="number">1</span>].totalTime)</span><br><span class="line">        &#123;</span><br><span class="line">            son++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(machines[dad].totalTime &gt; machines[son].totalTime)</span><br><span class="line">        &#123;</span><br><span class="line">            swap(machines + dad, machines + son);</span><br><span class="line">            dad = son;</span><br><span class="line">            son = <span class="number">2</span> * dad + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">greedy</span><span class="params">(Task_t *tasks)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Machine_t machines[MACHINENUM];</span><br><span class="line">    <span class="keyword">int</span> i, usedTime = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; MACHINENUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        machines[i].machineId = i +<span class="number">1</span>;</span><br><span class="line">        machines[i].totalTime = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; TASKNUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"task %d is distributed to machine %d\n"</span>, tasks[i].taskId, machines[<span class="number">0</span>].machineId);</span><br><span class="line">        machines[<span class="number">0</span>].totalTime += tasks[i].taskTime;</span><br><span class="line">        minHeap(machines, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; MACHINENUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(machines[i].totalTime &gt; usedTime)</span><br><span class="line">            usedTime = machines[i].totalTime;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"total used time : %d\n"</span>, usedTime);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Task_t tasks[TASKNUM];</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> time;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; TASKNUM; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        tasks[i].taskId = i + <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;time);</span><br><span class="line">        tasks[i].taskTime = time;</span><br><span class="line">    &#125;</span><br><span class="line">    qsort(tasks, TASKNUM, <span class="keyword">sizeof</span>(Task_t), compare);</span><br><span class="line">    greedy(tasks);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="/2019/09/20/作业：最小生成树和多机调度/%E4%BD%9C%E4%B8%9A%EF%BC%9A%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91%E5%92%8C%E5%A4%9A%E6%9C%BA%E8%B0%83%E5%BA%A6%5CtaskResult.png" alt="taskResult"></p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/09/06/数据结构和算法（一）/" title= "数据结构和算法（一）">
+                    <div class="prevTitle">数据结构和算法（一）</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80NjM5My8yMjkwNA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:992173062@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/SamJJJj" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.jpg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#最小生成树和作业调度"><span class="toc-number">1.</span> <span class="toc-text">最小生成树和作业调度</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kruscal算法"><span class="toc-number">1.1.</span> <span class="toc-text">Kruscal算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Prim算法"><span class="toc-number">1.2.</span> <span class="toc-text">Prim算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多机调度"><span class="toc-number">1.3.</span> <span class="toc-text">多机调度</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 4
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/作业：最小生成树和多机调度/" >作业：最小生成树和多机调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/06</span><a class="archive-post-title" href= "/2019/09/06/数据结构和算法（一）/" >数据结构和算法（一）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2019/08/30/linux下编译与makefile/" >linux下编译与makefile</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2019/08/19/helloworld/" >helloworld</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="hexo"><span class="iconfont-archer">&#xe606;</span>hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="linux, C"><span class="iconfont-archer">&#xe606;</span>linux, C</span>
+    
+        <span class="sidebar-tag-name" data-tags="algorithm"><span class="iconfont-archer">&#xe606;</span>algorithm</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "John Doe"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+	<script type="text/javascript" src="/js/src/clicklove.js"></script>
+    </body>
+</html>
+
+
