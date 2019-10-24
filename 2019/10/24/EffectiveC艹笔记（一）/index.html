@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>SamJ&#39;s blog</title>
+    <title>EffectiveC艹笔记（一）  · SamJ&#39;s blog</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >SamJ&#39;s blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">EffectiveC艹笔记（一） </a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>SamJ's blog</a>
 </header>
@@ -220,24 +231,74 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(//source.unsplash.com/random)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            EffectiveC艹笔记（一） 
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "C++">C++</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">1k</span>Reading time: <span class="post-count reading-time">4 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/10/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,97 +399,108 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/24/leetcode-有效的数独/" >
-            
-                <span>leetcode:有效的数独</span>
-        </a>
-        <div class="abstract-content">
-            每天一道leetcode,第一题。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "algorithm,c++">algorithm,c++</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <h4 id="条款一：将C-视为一个语言联邦（将C-划分为不同的次级语言）"><a href="#条款一：将C-视为一个语言联邦（将C-划分为不同的次级语言）" class="headerlink" title="条款一：将C++视为一个语言联邦（将C++划分为不同的次级语言）"></a>条款一：将C++视为一个语言联邦（将C++划分为不同的次级语言）</h4><p>将C++视为四个次语言，进入不同的次语言领域有不同的标准：</p>
+<ul>
+<li>C：内置数据类型，预处理，数组，指针</li>
+<li>Object-Oriented C++：类，封装，继承，多态，虚函数</li>
+<li>Template C++：模板元编程</li>
+<li>STL：STL组件</li>
+</ul>
+<h4 id="条款二：尽量以const-enums-inline-替换-define"><a href="#条款二：尽量以const-enums-inline-替换-define" class="headerlink" title="条款二：尽量以const,enums, inline 替换#define"></a>条款二：尽量以const,enums, inline 替换#define</h4><ul>
+<li><p>使用const或者enums替换#define，使用template的inline函数代替宏（#define）</p>
+<ul>
+<li>用const替换#define定义的宏便于调试，可以再符号表里找到定义的常量</li>
+<li>定义常量指针要用两个const： const char* const authorName =  “Scott Meyers”;(这里说常用string定义authorName如：const std::string authorName = “Scott Meyers”)</li>
+<li>定义class的专属常量时，要写成static，确保该常量只有一个实体</li>
+<li>enumhack，用一个enum代替int常量，可以防止别人获得指向该常量的指针</li>
+</ul>
+<p>用inline代替define：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CALL_WITH_MAX(a, b) f((a) &gt; (b) ? (a) : (b))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a, T&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    f(a &gt; b ? a : b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>相对于宏，这种写法不容易出错。</p>
+</li>
+</ul>
+<h4 id="条款三：尽可能使用const"><a href="#条款三：尽可能使用const" class="headerlink" title="条款三：尽可能使用const"></a>条款三：尽可能使用const</h4><p>要尽可能使用const，对于需要约束的变量一定要进行约束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span>* <span class="keyword">const</span> p = str;		<span class="comment">//指针是常量，指针指向数据不是</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* p2 = str;		<span class="comment">//指针不是常量，指针指向数据是</span></span><br></pre></td></tr></table></figure>
+
+<p>若被指物是常量，const在星号前，指针自身是常量，const在星号后。</p>
+<p>对于迭代器，<code>const vector&lt;int&gt;::iterator iter = vec.begin()</code> 作用类似于<code>T * const</code></p>
+<p>而<code>vector&lt;int&gt;::const_iterator iter = vec.begin()</code>作用类似于<code>const T*</code></p>
+<p>bitwise constness：成员函数在不更改对象的任何成员变量时才能称为const</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不具备const性质但可以通过bitwise constness检查的例子：</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CTextBlock</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">char</span>&amp; <span class="keyword">operator</span>[](<span class="built_in">std</span>::<span class="keyword">size_t</span> position) <span class="keyword">const</span></span><br><span class="line">    &#123;<span class="keyword">return</span> pText[position];&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span>* pText;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//该代码可以通过bitwise constness测试，但可以通过[]修改pText指向的字符串的值</span></span><br></pre></td></tr></table></figure>
+
+<p>logical constness:在客户端看来是const的，也就是说实现上可能会改变数据成员的值，但是用户却感觉不到（mutable关键字）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CTextBlock</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>：</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> length() <span class="keyword">const</span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span>* pText;</span><br><span class="line">    <span class="keyword">mutable</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> textLength;</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">bool</span> lengthIsValid;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">size_t</span> CTextBlock::length() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!lengthIsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        textLength = <span class="built_in">std</span>::<span class="built_in">strlen</span>(pText);	<span class="comment">//mutable保证可以再const成员函数中修改</span></span><br><span class="line">        lengthIsValid = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> textLength</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>const成员函数：</p>
+<p>对于实现相同功能的成员函数，对他们的const 和非const版本，用非const版本调用const版本避免代码重复。</p>
+<h4 id="条款四：确定对象使用前已经被初始化"><a href="#条款四：确定对象使用前已经被初始化" class="headerlink" title="条款四：确定对象使用前已经被初始化"></a>条款四：确定对象使用前已经被初始化</h4><ul>
+<li>对于内置类型，必须在使用之前进行初始化</li>
+<li>当使用构造函数时，使用初始化列表来定义构造函数。</li>
+<li>对于静态对象，当多个non-local static对象处于不同的源文件内，且有初始化顺序的约束，即在使用一个对象时必须保证另一个对象已经被初始化，这时要使用单例模式。</li>
+</ul>
+<h4 id="条款五：了解C-会默认调用的函数"><a href="#条款五：了解C-会默认调用的函数" class="headerlink" title="条款五：了解C++会默认调用的函数"></a>条款五：了解C++会默认调用的函数</h4><p>C++会自动提供默认的构造函数，拷贝构造函数，析构函数，和赋值运算符，且均为public inline 。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果你写了一个空类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Empty</span>&#123;</span>	&#125;;</span><br><span class="line"><span class="comment">//相当于你写了下面这样一个类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Empty</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Empty() &#123;...&#125;</span><br><span class="line">    Empty(<span class="keyword">const</span> Empty &amp;rhs) &#123;...&#125;</span><br><span class="line">    ~Empty()&#123;...&#125;</span><br><span class="line">    </span><br><span class="line">    Empty&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Empty &amp; rhs) &#123;...&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对于拷贝构造函数和赋值运算符，默认的版本只单纯将来源对象的每一个non-static成员拷贝到目标对象，注意，若对成员的拷贝操作不合法时，例如当成员是引用类型的时候（引用类型不能进行拷贝），编译器会报错，此时调用默认的拷贝构造函数和赋值运算符是很危险的。</p>
+<p>当基类将赋值运算符设为private，其子类就不会提供默认的拷贝运算符（原因是基类无法拷贝）。</p>
+<ul>
+<li>使用自定义类型时要注意是否使用编译器提供的默认构造函数，析构函数，拷贝构造函数，赋值运算符。</li>
+</ul>
+
     </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/24/EffectiveC艹笔记（一）/" >
-            
-                <span>EffectiveC艹笔记（一） </span>
-        </a>
-        <div class="abstract-content">
-            为什么用C艹？因为hexo我打不出来C++。。。打出来题目就变成C-。。。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "C++">C++</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2019/10/12/インフェルノ/" >
-            
-                <span>インフェルノ</span>
-        </a>
-        <div class="abstract-content">
-            炎炎消防队主题曲，可以说是7月新番最富有？
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/12</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "japanese,anime">japanese,anime</a>
-    
-</div>
-            
-        </div>
-    </article>
+    <!-- license  -->
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/10/24/leetcode-有效的数独/" title= "leetcode:有效的数独">
+                    <div class="nextTitle">leetcode:有效的数独</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/10/12/インフェルノ/" title= "インフェルノ">
+                    <div class="prevTitle">インフェルノ</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80NjM5My8yMjkwNA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -513,6 +585,24 @@
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#条款一：将C-视为一个语言联邦（将C-划分为不同的次级语言）"><span class="toc-number">1.</span> <span class="toc-text">条款一：将C++视为一个语言联邦（将C++划分为不同的次级语言）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二：尽量以const-enums-inline-替换-define"><span class="toc-number">2.</span> <span class="toc-text">条款二：尽量以const,enums, inline 替换#define</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款三：尽可能使用const"><span class="toc-number">3.</span> <span class="toc-text">条款三：尽可能使用const</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款四：确定对象使用前已经被初始化"><span class="toc-number">4.</span> <span class="toc-text">条款四：确定对象使用前已经被初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款五：了解C-会默认调用的函数"><span class="toc-number">5.</span> <span class="toc-text">条款五：了解C++会默认调用的函数</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -724,6 +814,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
 	<script type="text/javascript" src="/js/src/clicklove.js"></script>
     </body>
