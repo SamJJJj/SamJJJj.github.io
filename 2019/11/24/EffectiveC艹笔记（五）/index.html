@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="John Doe">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="John Doe">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>EffectiveC艹笔记（五） · SamJ&#39;s blog</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >SamJ&#39;s blog</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">EffectiveC艹笔记（五）</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>SamJ's blog</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(//source.unsplash.com/random)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            EffectiveC艹笔记（五）
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "C++">C++</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>Word count: <span class="post-count word-count">2k</span>Reading time: <span class="post-count reading-time">7 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/11/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h4 id="条款二十一：不要总想着返回对象的引用而不返回对象本身"><a href="#条款二十一：不要总想着返回对象的引用而不返回对象本身" class="headerlink" title="条款二十一：不要总想着返回对象的引用而不返回对象本身"></a>条款二十一：不要总想着返回对象的引用而不返回对象本身</h4><p>我们上一条了解到<code>pass-by-value</code>会带来效率上的问题，但不要什么都<code>pass-by-reference</code>。特别是当一些<code>reference</code>会指向不存在的对象的时候。</p>
+<p>考虑下面一个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rational</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Rational(<span class="keyword">int</span> numerator = <span class="number">0</span>,</span><br><span class="line">             <span class="keyword">int</span> denominator = <span class="number">1</span>);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> n, d;</span><br><span class="line">    <span class="keyword">friend</span> <span class="keyword">const</span> Rational </span><br><span class="line">        <span class="keyword">operator</span>* (<span class="keyword">const</span> Rational &amp;lhs,</span><br><span class="line">                   <span class="keyword">const</span> Rational &amp;rhs);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//这时可能有人会想，把operator*的返回值改为reference这样可以减少return value 的代价。</span></span><br><span class="line"><span class="comment">//于是有了下面的代码</span></span><br><span class="line"><span class="keyword">const</span> Rational&amp; <span class="keyword">operator</span>*(<span class="keyword">const</span> Rational &amp;lhs,</span><br><span class="line">                          <span class="keyword">const</span> Rational &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">Rational <span class="title">result</span><span class="params">(lhs.n * rhs.n, lhs.d * rhs.d)</span></span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这时返回的是一个引用，指向了局部变量result，而result会在函数结束时销毁</span></span><br><span class="line"><span class="comment">//所以此时返回会发生错误，不是想要的结果。</span></span><br></pre></td></tr></table></figure>
+
+<p>所以，像<code>operator*</code>这样必须返回一个对象的函数就让他返回一个新对象。</p>
+<ul>
+<li>不要返回指向local变量的指针或者引用。单线程中，只有一个local static对象的情况是例外（单例模式）。</li>
+</ul>
+<h4 id="条款二十二：将成员变量声明为private"><a href="#条款二十二：将成员变量声明为private" class="headerlink" title="条款二十二：将成员变量声明为private"></a>条款二十二：将成员变量声明为private</h4><p>首先是为了语法一致性，如果成员变量不是public，那么用户只能访问成员函数，用户可以很容易地记住使用方法。</p>
+<p>第二是可以堆成员变量的访问进行有效的控制。</p>
+<p>如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AccessLevels</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getReadOnly</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _readOnly;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setReadWrite</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123; _readWrite = value;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getReadWrite</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _readWrite;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setWriteOnly</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123; _writeOnly = value;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _noAccess;	<span class="comment">//不允许进行访问</span></span><br><span class="line">    <span class="keyword">int</span> _readOnly;	<span class="comment">//只读</span></span><br><span class="line">    <span class="keyword">int</span> _readWrite;	<span class="comment">//读写</span></span><br><span class="line">    <span class="keyword">int</span> _writeOnly;	<span class="comment">//只写</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>第三，为了更好的封装性，将成员变量生命为private可以对用户隐藏处理他们的细节，防止后续对这些处理过程改变时引起的大量的代码重写。</p>
+<p>第四，protected不必public封装性强，因为如果基类的protected成员改变时，其派生类的所有相关函数都要进行修改。</p>
+<ul>
+<li>将成员变量声明为private，这可以赋予用户访问数据的一致性，可细粒度地划分访问控制权限，并在修改class时堆用户造成较小的麻烦。</li>
+<li>protected封装性并不比public强。</li>
+</ul>
+<h4 id="条款二十三：以非成员，非友元替换成员函数"><a href="#条款二十三：以非成员，非友元替换成员函数" class="headerlink" title="条款二十三：以非成员，非友元替换成员函数"></a>条款二十三：以非成员，非友元替换成员函数</h4><p>举的是浏览器类的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebBrowser</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearCache</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearHistory</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">removeCookies</span><span class="params">()</span></span>;<span class="comment">//一些清理不同数据的函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//有些用户会想用一个函数完成这三个函数的功能。</span></span><br><span class="line"><span class="comment">//考虑下面那种方式会更好</span></span><br><span class="line"><span class="comment">//1，以成员函数提供</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WebBrowser</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearCache</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearHistory</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">removeCookies</span><span class="params">()</span></span>;<span class="comment">//一些清理不同数据的函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearEverythin</span><span class="params">()</span></span>;<span class="comment">//调用上面的三个函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//2，以非成员函数提供</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">clearBrowser</span><span class="params">(WebBrowser&amp; wb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    wb.cleraCache();</span><br><span class="line">    wb.clearHistory();</span><br><span class="line">    wb.removeCookies();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从题目可以知道，肯定是非成员函数的版本号（笑）。那么为什么呢？</p>
+<p>这一条款只适用于在 成员函数 和 非成员函数，非友元函数之间进行选择的时候。</p>
+<p>首先是封装性，越少的函数可以直接访问数据，封装性就越强，非成员函数形式并不能直接访问数据，可以知道分成原函数的版本封装性更强。</p>
+<p>还有一个要注意的是<code>clearBrowser</code>可以是其他类的成员函数。</p>
+<p>C++中比较普遍的做法是让<code>clearBrowser</code>称为一个<code>non-member</code>函数并且位于和<code>WebBrowser</code>相同的命名空间内。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> WebBrowserStuff&#123;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WebBrowser</span>&#123;</span>..&#125;;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">clearBrowser</span><span class="params">(WebBrowser&amp; wb)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>namespace</code>是可以跨文件的，所以我们可以把对一种数据的操作都放入一个头文件中，并且以<code>WebBrowserStuff</code>这一命名空间将其包裹。</p>
+<p>这样的写法类似于使用标准库时，使用<code>vector</code>时写上<code>#include &lt;vector&gt;</code>用到哪些功能，就包含那个头文件，降低了编译依赖。同时，用户还可以扩展如<code>cleraBrowser</code>这样的函数，灵活地实现想要的功能。</p>
+<ul>
+<li>可以实现相同的功能时，用非成员函数，非友元函数替换成员函数，可以增加封装性，可扩展性。</li>
+</ul>
+<h4 id="条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数"><a href="#条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数" class="headerlink" title="条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数"></a>条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数</h4><p>需要class支持隐式类型转换时：如定义了一个有理数类，允许其与int类型转换是一个合理的操作。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rational</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Rational(<span class="keyword">int</span> _numerator= <span class="number">0</span>, <span class="keyword">int</span> _denominator = <span class="number">1</span>);<span class="comment">//不为explicit</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numerator</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _numerator;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">denominator</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _denominator;&#125;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> _numerator;</span><br><span class="line">    <span class="keyword">int</span> _denominator;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>当你想要实现一些算术操作时，首先会想到以成员函数来实现他们。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rational</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">const</span> Rational <span class="keyword">operator</span>* (<span class="keyword">const</span> Rational&amp; rhs) <span class="keyword">const</span>;	<span class="comment">//可以实现有理数和有理数的相乘</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//但当出现了下面的情况</span></span><br><span class="line"><span class="function">Rational <span class="title">oneHalf</span><span class="params">(<span class="number">1</span>, <span class="number">2</span>)</span></span>;</span><br><span class="line">Rational result = oneHalf * <span class="number">2</span>;	<span class="comment">//可以调用成功</span></span><br><span class="line">Rational result = <span class="number">2</span> * oneHalf;	<span class="comment">//会出现错误</span></span><br></pre></td></tr></table></figure>
+
+<p>这不符合我们乘法应该满足交换律的认知。会出现错误的原因是<code>2*oneHalf</code>可以看成<code>operator*(2, oneHalf)</code>。但是并没有这样接收一个<code>int</code>类型和一个<code>Rational</code>为参数的乘法操作符。调用成功的是因为将2默认转换成了<code>Rational</code>。而当我们把<code>operator*</code>定义为一个非成员函数的时候，就可以解决这个问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Rational <span class="keyword">operator</span>*(<span class="keyword">const</span> Rational&amp; lhs, <span class="keyword">const</span> Rational&amp; rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Rational(lhs.numerator() * rhs.numerator(),</span><br><span class="line">                    lhs.denominator() * rhs.denominator());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果一个与某个class相关的函数不能成为成员函数，首先考虑的是用非成员函数解决它，而不是友元函数。</p>
+<ul>
+<li>如果某个函数的所有参数都要进行类型转换，那么这个函数必须是一个非成员函数。</li>
+</ul>
+<h4 id="条款二十五：写出一个不抛出异常的swap函数"><a href="#条款二十五：写出一个不抛出异常的swap函数" class="headerlink" title="条款二十五：写出一个不抛出异常的swap函数"></a>条款二十五：写出一个不抛出异常的swap函数</h4><p><code>swap</code>是STL的一部分，缺省情况下<code>swap</code>的定义是这样的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T&amp; a, T&amp; b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="function">T <span class="title">temp</span><span class="params">(a)</span></span>;</span><br><span class="line">        a = b;</span><br><span class="line">        b = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要T支持复制构造函数和赋值运算符<code>swap</code>就能顺利完成。而在一些情况下我们并不需要这样全盘赋值来实现<code>swap</code> 。举一个典型的例子是pImpl设计模式。以指针指向一个对象，指向的对象内有真正的数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WidgetImpl</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> a, b, c;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; v;<span class="comment">//.....有很多数据</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Widget(<span class="keyword">const</span> Widget&amp; rhs);</span><br><span class="line">    Widget&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line">        *pImpl = *(rhs.pImpl);</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    WidgetImpl* pImpl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这时如果我们还调用<code>std::swap</code>的话，这个函数会赋值三个<code>Widget</code>和三个<code>WidgetImpl</code>对象，这大大影响了效率，我们完全可以通过直接交换<code>pImpl</code>指针来完成<code>swap</code>的工作。</p>
+<p>正确的做法：在<code>Widget</code>内声明一个<code>swap</code>的<code>public</code>成员函数来做真正的置换工作，然后实现<code>std::swap</code>的特化版本来调用这个函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&amp; other)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line">        swap(pImpl, other.pImpl)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">template</span>&lt;&gt;</span><br><span class="line">    <span class="keyword">void</span> swap&lt;Widget&gt;(Widget&amp; a, Widget&amp; b)</span><br><span class="line">    &#123;</span><br><span class="line">        a.swap(b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果上面提到的<code>Widget</code> 和<code>WidgetImpl</code>是<code>class template</code>而非<code>class</code> ，我们如果想对其实现<code>swap</code>函数，应该采用类似的做法，同时也体现了要合理运用命名空间这一点：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> WidgetStuff&#123;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span>...&#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&lt;T&gt;&amp; a, Widget&lt;T&gt;&amp; b)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        a.swap(b);	<span class="comment">//在上面的Widget模板类中已经实现</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>自己实现效率更高<code>swap</code>的时候，提供一个成员函数版本的<code>swap</code> 并提供一个非成员函数的<code>swap</code>来调用前者，对于非模板类，要特化<code>std::swap</code></li>
+<li>调用<code>swap</code>时应针对<code>std::swap</code>使用<code>using</code>声明式，然后不带任何命令空间修饰地调用<code>swap</code></li>
+<li>不要在<code>std</code>内加入对<code>std</code>而言全新的东西</li>
+</ul>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/2019/11/24/leetcode做题记录（3）/" title= "leetcode做题记录（3）">
+                    <div class="nextTitle">leetcode做题记录（3）</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/2019/11/24/EffectiveC艹笔记（四）/" title= "EffectiveC艹笔记（四）">
+                    <div class="prevTitle">EffectiveC艹笔记（四）</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+    <div id="lv-container" data-id="city" data-uid= MTAyMC80NjM5My8yMjkwNA==>
+        <script type="text/javascript">
+            (function (d, s) {
+                var j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') { return; }
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:992173062@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/SamJJJj" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/wechat.jpg" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二十一：不要总想着返回对象的引用而不返回对象本身"><span class="toc-number">1.</span> <span class="toc-text">条款二十一：不要总想着返回对象的引用而不返回对象本身</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二十二：将成员变量声明为private"><span class="toc-number">2.</span> <span class="toc-text">条款二十二：将成员变量声明为private</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二十三：以非成员，非友元替换成员函数"><span class="toc-number">3.</span> <span class="toc-text">条款二十三：以非成员，非友元替换成员函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数"><span class="toc-number">4.</span> <span class="toc-text">条款二十四：若函数的所有参数都需要类型转换，要使用non-member函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#条款二十五：写出一个不抛出异常的swap函数"><span class="toc-number">5.</span> <span class="toc-text">条款二十五：写出一个不抛出异常的swap函数</span></a></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 14
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/24</span><a class="archive-post-title" href= "/2019/11/24/EffectiveC艹笔记（五）/" >EffectiveC艹笔记（五）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/24</span><a class="archive-post-title" href= "/2019/11/24/leetcode做题记录（3）/" >leetcode做题记录（3）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/24</span><a class="archive-post-title" href= "/2019/11/24/EffectiveC艹笔记（四）/" >EffectiveC艹笔记（四）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2019/11/10/leetcode做题记录（2）/" >leetcode做题记录（2）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/10</span><a class="archive-post-title" href= "/2019/11/10/EffectiveC艹笔记（三）/" >EffectiveC艹笔记（三）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/leetcode做题记录（1）/" >leetcode做题记录（1）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/EffectiveC艹笔记（二）/" >EffectiveC艹笔记（二）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2019/10/24/EffectiveC艹笔记（一）/" >EffectiveC艹笔记（一） </a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/24</span><a class="archive-post-title" href= "/2019/10/24/leetcode-有效的数独/" >leetcode:有效的数独</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/12</span><a class="archive-post-title" href= "/2019/10/12/インフェルノ/" >インフェルノ</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/20</span><a class="archive-post-title" href= "/2019/09/20/作业：最小生成树和多机调度/" >作业：最小生成树和多机调度</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/06</span><a class="archive-post-title" href= "/2019/09/06/数据结构和算法（一）/" >数据结构和算法（一）</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/30</span><a class="archive-post-title" href= "/2019/08/30/linux下编译与makefile/" >linux下编译与makefile</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/19</span><a class="archive-post-title" href= "/2019/08/19/helloworld/" >helloworld</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
+    
+        <span class="sidebar-tag-name" data-tags="hexo"><span class="iconfont-archer">&#xe606;</span>hexo</span>
+    
+        <span class="sidebar-tag-name" data-tags="algorithm,c++"><span class="iconfont-archer">&#xe606;</span>algorithm,c++</span>
+    
+        <span class="sidebar-tag-name" data-tags="linux, C"><span class="iconfont-archer">&#xe606;</span>linux, C</span>
+    
+        <span class="sidebar-tag-name" data-tags="algorithm"><span class="iconfont-archer">&#xe606;</span>algorithm</span>
+    
+        <span class="sidebar-tag-name" data-tags="japanese,anime"><span class="iconfont-archer">&#xe606;</span>japanese,anime</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "John Doe"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+	<script type="text/javascript" src="/js/src/clicklove.js"></script>
+    </body>
+</html>
+
+
